@@ -16,6 +16,9 @@ int main() {
     insertNode(library, {2, "The Scientist", "Coldplay", 2010, "05:09", "Nobody said it was easy\nIt's such a shame for us to part\nNobody said it was easy\nNo one ever said it would be this hard\nOh, take me back to the start"});
     insertNode(library, {3, "if u could see me cryin' in my room", "Arash Buana, raissa anggiani", 2020, "04:16", "Hey, I missed you too\nAnd just so you know, I still love you\nAnd I don't even know if I'm alright\n'Cause if I called we'd only end up in a fight\nAnd I don't wanna keep on getting hurt\nStill holding to your favorite little shirt"});
     insertNode(library, {4, "XXL", "LANY", 2023, "03:26", "I still remember, I will forever\nBackseat secrets we won't ever tell, I miss you double XL\nMiss Americana and all my friends love ya\nBack patio at the Bowery Hotel, I miss you double XL"});
+    insertNode(library, {5, "The Fate of Ophelia", "Taylor Swift", 2025, "03:46", "Keep it one hundred\nOn the land, the sea, the sky\nPledge allegiance to your hands\nYour team, your vibes"});
+    insertNode(library, {6, "So Easy", "Olivia Dean", 2025, "02:49", "'Cause I make it so easy to fall in love\nSo come give me a call, and we'll fall into us\nI'm the perfect mix of Saturday night and the rest of your life\nAnyone with a heart would agree"});
+    insertNode(library, {7, "Blue Jeans", "GANGGA", 2020, "03:31", "Sometimes I wish\nThat I could still call you mine\n"});
 
     int menu, id, tahun;
     string title, artist, durasi, lirik;
@@ -108,7 +111,7 @@ int main() {
                 
                 if (pilihTambah == 1) {
                     addLast(playlist, found->data);
-                    cout << "✔ Lagu ditambahkan ke playlist!\n";
+                    cout << "Lagu ditambahkan ke playlist!\n";
                 }
             }
             else {

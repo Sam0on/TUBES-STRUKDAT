@@ -60,7 +60,7 @@ void playSongs(DLLNode* head) {
     int choice;
 
     while (true) {
-        cout << "\n===== MEMUTAR LAGU =====\n";
+        cout << "\n===== Sedang Diputar =====\n";
         cout << "Judul  : " << current->data.title << endl;
         cout << "Artis  : " << current->data.artist << endl;
         cout << "Tahun  : " << current->data.tahun << endl;
@@ -68,12 +68,22 @@ void playSongs(DLLNode* head) {
         cout << "\nLirik:\n" << current->data.lirik << endl;
         cout << "=========================\n";
 
-        cout << "[1] Next  |  [2] Prev  |  [3] Stop\nPilih: ";
+        cout << "[1] Next  |  [2] Prev  |  [3] Pause  |  [4] Back\nPilih: ";
         cin >> choice;
 
-        if (choice == 1)      current = current->next;     // next
-        else if (choice == 2) current = current->prev;     // prev
-        else break;
+        if (choice == 1) {
+            current = current->next;
+        }
+        else if (choice == 2) {
+            current = current->prev;
+        }
+        else if (choice == 3) {
+            cout << "Lagu sedang di pause...\n";
+            system("pause");
+        }
+        else if (choice == 4) {
+            break;
+        }
     }
 }
 
