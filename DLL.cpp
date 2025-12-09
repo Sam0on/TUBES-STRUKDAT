@@ -87,3 +87,55 @@ void playSongs(DLLNode* head) {
     }
 }
 
+string normalizeDLL(string s) {
+    string res = "";
+    for (char c : s) {
+        if (!isspace(c)) {
+            res += tolower(c);
+        }
+    }
+    return res;
+}
+
+void deleteFromPlaylist(DLLNode*& head, string title) {
+    if (!head) {
+        cout << "Playlist kosong.\n";
+        return;
+    }
+
+    DLLNode* current = head;
+    string target = normalizeDLL(title);
+    bool found = false;
+
+    do {
+        if (normalizeDLL(current->data.title) == target) {
+            found = true;
+            break;
+        }
+        current = current->next;
+    } while (current != head);
+
+    if (!found) {
+        cout << "Lagu tidak ditemukan di playlist.\n";
+        return;
+    }
+
+    // Jika satu-satunya node
+    if (current->next == head && current->prev == head) {
+        delete current;
+        head = nullptr;
+    } else {
+        DLLNode* prevNode = current->prev;
+        DLLNode* nextNode = current->next;
+
+        prevNode->next = nextNode;
+        nextNode->prev = prevNode;
+
+        if (current == head) {
+            head = nextNode;
+        }
+        delete current;
+    }
+    cout << "Lagu berhasil dihapus dari playlist.\n";
+}
+

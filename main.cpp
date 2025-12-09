@@ -93,6 +93,7 @@ int main() {
             cout << "2. Tambah Lagu ke Playlist\n";
             cout << "3. Lihat Playlist\n";
             cout << "4. Putar Playlist\n";
+            cout << "5. Hapus Lagu dari Playlist\n";
             cout << "Pilih: ";
             cin >> u;
 
@@ -143,6 +144,12 @@ int main() {
 
             else if (u == 4) {
                 playSongs(playlist);
+            }
+            else if (u == 5) {
+                cin.ignore();
+                cout << "Masukkan Judul Lagu yang ingin dihapus dari playlist: ";
+                getline(cin, title);
+                deleteFromPlaylist(playlist, title);
             }
         }
         else break;

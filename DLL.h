@@ -15,5 +15,6 @@ DLLNode* createDLLNode(song data);
 void addLast(DLLNode*& head, song data);
 void showList(DLLNode* head);
 void playSongs(DLLNode* head);
+void deleteFromPlaylist(DLLNode*& head, string title);
 
 #endif
