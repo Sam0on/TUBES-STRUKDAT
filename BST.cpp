@@ -27,6 +27,16 @@ void insertNode(BSTNode*& root, song data) {
         insertNode(root->right, data);
 }
 
+string normalize(string s) {
+    string res = "";
+    for (char c : s) {
+        if (!isspace(c)) {
+            res += tolower(c);
+        }
+    }
+    return res;
+}
+
 string toLowerStr(string s) {
     for (char &c : s) c = tolower(c);
     return s;
@@ -35,7 +45,7 @@ string toLowerStr(string s) {
 BSTNode* searchByTitle(BSTNode* root, const string& title) {
     if (!root) return nullptr;
 
-    if (root->data.title == title)
+    if (normalize(root->data.title) == normalize(title))
         return root;
 
     BSTNode* left = searchByTitle(root->left, title);

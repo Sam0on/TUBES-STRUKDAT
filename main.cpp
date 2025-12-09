@@ -11,6 +11,12 @@ int main() {
     createTree(library);
     createList(playlist);
 
+    // Data awal (Dummy Data)
+    insertNode(library, {1, "Closer", "The Chainsmokers, Halsey", 2016, "04:04", "Hey, I was doing just fine before I met you\nI drink too much and that's an issue, but I'm okay\nHey, you tell your friends it was nice to meet them\nBut I hope I never see them again"});
+    insertNode(library, {2, "The Scientist", "Coldplay", 2010, "05:09", "Nobody said it was easy\nIt's such a shame for us to part\nNobody said it was easy\nNo one ever said it would be this hard\nOh, take me back to the start"});
+    insertNode(library, {3, "if u could see me cryin' in my room", "Arash Buana, raissa anggiani", 2020, "04:16", "Hey, I missed you too\nAnd just so you know, I still love you\nAnd I don't even know if I'm alright\n'Cause if I called we'd only end up in a fight\nAnd I don't wanna keep on getting hurt\nStill holding to your favorite little shirt"});
+    insertNode(library, {4, "XXL", "LANY", 2023, "03:26", "I still remember, I will forever\nBackseat secrets we won't ever tell, I miss you double XL\nMiss Americana and all my friends love ya\nBack patio at the Bowery Hotel, I miss you double XL"});
+
     int menu, id, tahun;
     string title, artist, durasi, lirik;
 
