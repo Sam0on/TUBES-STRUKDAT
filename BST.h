@@ -17,5 +17,7 @@ BSTNode* searchByTitle(BSTNode* root, const string& title);
 void inOrder(BSTNode* root);
 BSTNode* minValueNode(BSTNode* node);
 BSTNode* deleteNode(BSTNode* root, const string& title);
+void recommendByGenre(BSTNode* root, const string& genre);
+
 
 #endif

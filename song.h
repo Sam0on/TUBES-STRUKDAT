@@ -9,6 +9,7 @@ struct song {
     string artist;
     int tahun;
     string durasi;
+    string genre;
     string lirik;
 };
 

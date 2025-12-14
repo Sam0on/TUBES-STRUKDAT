@@ -92,3 +92,15 @@ BSTNode* deleteNode(BSTNode* root, const string& title) {
     }
     return root;
 }
+
+void recommendByGenre(BSTNode* root, const string& genre) {
+    if (root == nullptr) return;
+
+    recommendByGenre(root->left, genre);
+
+    if (toLowerStr(root->data.genre) == toLowerStr(genre)) {
+         cout << root->data.id << ". " << root->data.title << " - " << root->data.artist << endl;
+    }
+
+    recommendByGenre(root->right, genre);
+}
