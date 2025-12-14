@@ -1,4 +1,3 @@
-// BST.cpp
 #include <iostream>
 #include <cctype>
 #include "BST.h"
