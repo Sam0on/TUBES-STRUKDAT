@@ -105,3 +105,13 @@ void recommendByGenre(BSTNode* root, const string& genre) {
 
     recommendByGenre(root->right, genre);
 }
+
+int getMaxID(BSTNode* root) {
+    if (root == nullptr) return 0; // Jika kosong, ID mulai dari 0 (nanti +1 jadi 1)
+    
+    BSTNode* current = root;
+    while (current->right != nullptr) {
+        current = current->right;
+    }
+    return current->data.id;
+}

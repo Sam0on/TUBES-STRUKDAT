@@ -54,8 +54,8 @@ int main() {
             cin >> m;
 
             if (m == 1) {
-                cout << "ID Lagu: ";
-                cin >> id;
+                id = getMaxID(library) + 1;
+                cout << "ID: " << id << endl;
                 cin.ignore();
 
                 cout << "Judul Lagu: ";
