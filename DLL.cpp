@@ -1,6 +1,8 @@
 // DLL.cpp
 #include <iostream>
 #include "DLL.h"
+#include "BST.h"
+#include <cstdlib>
 using namespace std;
 
 void createList(DLLNode*& head) {
@@ -42,8 +44,7 @@ void showList(DLLNode* head) {
 
     DLLNode* temp = head;
     do {
-        cout << temp->data.id << ". " 
-             << temp->data.title << " - " 
+        cout << temp->data.title << " - " 
              << temp->data.artist << endl;
         temp = temp->next;
     } while (temp != head);
@@ -82,15 +83,15 @@ void playSongs(DLLNode* head, Stack& history, DLLNode* startNode) {
         cout << "\nLirik:\n" << current->data.lirik << endl;
         cout << "=========================\n";
 
-        cout << "[1] Next  |  [2] Prev  |  [3] Pause  |  [4] Back\nPilih: ";
+        cout << "[1] Prev  |  [2] Next  |  [3] Pause  |  [4] Back\nPilih: ";
         cin >> choice;
 
         if (choice == 1) {
-            current = current->next;
+            current = current->prev;
             push(history, current->data);
         }
         else if (choice == 2) {
-            current = current->prev;
+            current = current->next;
             push(history, current->data);
         }
         else if (choice == 3) {
@@ -155,3 +156,49 @@ void deleteFromPlaylist(DLLNode*& head, string title) {
     cout << "Lagu berhasil dihapus dari playlist.\n";
 }
 
+void reindexDLL(DLLNode* head, int deletedID) {
+    if (!head) return;
+    
+    DLLNode* current = head;
+    do {
+        if (current->data.id > deletedID) {
+            current->data.id--;
+        }
+        current = current->next;
+    } while (current != head);
+}
+
+void playStandalone(song startSong, BSTNode* library, Stack& history) {
+    song currentSong = startSong;
+    int choice;
+
+    // Push first song
+    push(history, currentSong);
+
+    while (true) {
+        cout << "\n===== Putar Langsung (Standalone) =====\n";
+        cout << "Judul  : " << currentSong.title << endl;
+        cout << "Artis  : " << currentSong.artist << endl;
+        cout << "Tahun  : " << currentSong.tahun << endl;
+        cout << "Durasi : " << currentSong.durasi << endl;
+        cout << "\nLirik:\n" << currentSong.lirik << endl;
+        cout << "======================================\n";
+        cout << "(Next/Prev akan memutar lagu acak dari Library)\n";
+
+        cout << "[1] Prev  |  [2] Next  |  [3] Pause  |  [4] Back\nPilih: ";
+        cin >> choice;
+
+        if (choice == 1 || choice == 2) {
+             // Random play logic
+             currentSong = getRandomSong(library);
+             push(history, currentSong);
+        }
+        else if (choice == 3) {
+            cout << "Lagu sedang di pause...\n";
+            system("pause");
+        }
+        else if (choice == 4) {
+            break;
+        }
+    }
+}

@@ -15,5 +15,6 @@ struct Stack {
 void createStack(Stack& S);
 void push(Stack& S, song data);
 void showHistory(Stack S);
+void reindexStack(Stack& S, int deletedID);
 
 #endif

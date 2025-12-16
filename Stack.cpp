@@ -26,4 +26,17 @@ void showHistory(Stack S) {
         temp = temp->next;
         i++;
     }
+    cout << "========================\n";
+}
+
+void reindexStack(Stack& S, int deletedID) {
+    if (!S.top) return;
+
+    StackNode* temp = S.top;
+    while (temp != nullptr) {
+        if (temp->data.id > deletedID) {
+            temp->data.id--;
+        }
+        temp = temp->next;
+    }
 }

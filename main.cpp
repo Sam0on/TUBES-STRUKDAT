@@ -2,9 +2,12 @@
 #include "BST.h"
 #include "DLL.h"
 #include "Stack.h"
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
 int main() {
+    srand(time(0));
     BSTNode* library;
     DLLNode* playlist;
     Stack history;
@@ -70,6 +73,11 @@ int main() {
                 cout << "Artis: ";
                 getline(cin, artist);
 
+                if (containsDuplicate(library, title, artist)) {
+                    cout << "Lagu sudah tersedia!\n";
+                    continue; // Kembali ke menu admin loop
+                }
+
                 cout << "Tahun Rilis: ";
                 cin >> tahun;
                 cin.ignore();
@@ -102,8 +110,23 @@ int main() {
                 cin.ignore();
                 cout << "Masukkan Judul lagu yang ingin dihapus: ";
                 getline(cin, title);
-                library = deleteNode(library, title);
-                cout << "Lagu dihapus.\n";
+                BSTNode* target = searchByTitle(library, title);
+                if (target) {
+                    int idToDelete = target->data.id;
+                    string titleToDelete = target->data.title;
+                    
+                    library = deleteNode(library, idToDelete);
+                    reindexBST(library, idToDelete);
+                    
+                    deleteFromPlaylist(playlist, titleToDelete);
+                    reindexDLL(playlist, idToDelete);
+                    
+                    reindexStack(history, idToDelete);
+                    
+                    cout << "Lagu berhasil dihapus. ID lagu lain telah diperbarui.\n";
+                } else {
+                    cout << "Lagu tidak ditemukan.\n";
+                }
             }
             else if (m == 4) {
                  cout << "Masukkan ID Lagu yang ingin diedit: ";
@@ -159,15 +182,18 @@ int main() {
         }
 
         else if (menu == 2) {
-            int u;
-            cout << "\n=== MENU USER ===\n";
-            cout << "1. Cari Lagu\n";
-            cout << "2. Lihat Playlist (Putar, Tambah, Hapus)\n";
-            cout << "3. Lihat Riwayat Lagu\n";
-            cout << "4. Rekomendasi Lagu Sesuai Genre\n";
-            cout << "0. Kembali ke Menu Utama\n";
-            cout << "Pilih: ";
-            cin >> u;
+            while (true) {
+                int u;
+                cout << "\n=== MENU USER ===\n";
+                cout << "1. Cari Lagu\n";
+                cout << "2. Lihat Playlist (Putar, Tambah, Hapus)\n";
+                cout << "3. Lihat Riwayat Lagu\n";
+                cout << "4. Rekomendasi Lagu Sesuai Genre\n";
+                cout << "0. Kembali ke Menu Utama\n";
+                cout << "Pilih: ";
+                cin >> u;
+                
+                if (u == 0) break;
 
             if (u == 1) {
                 cin.ignore();
@@ -176,7 +202,7 @@ int main() {
 
                 BSTNode* found = searchByTitle(library, title);
                 if (found) {
-                    cout << "Ditemukan: " << found->data.title << " - " << found->data.artist << endl;
+                    cout << "\nDitemukan: " << found->data.title << " - " << found->data.artist << " \n" << endl;
                     
                     int opsi;
                     cout << "1. Tambah ke Playlist\n";
@@ -189,9 +215,8 @@ int main() {
                         addLast(playlist, found->data);
                         cout << "Lagu ditambahkan ke playlist!\n";
                     } else if (opsi == 2) {
-                        addLast(playlist, found->data);
-                        // Play dari node terakhir (tail)
-                        playSongs(playlist, history, playlist->prev); 
+                        // Putar langsung tanpa masuk playlist
+                        playStandalone(found->data, library, history);
                     }
                 }
                 else {
@@ -246,6 +271,7 @@ int main() {
                 getline(cin, genre);
                 cout << "\n=== REKOMENDASI LAGU (" << genre << ") ===\n";
                 recommendByGenre(library, genre);
+            }
             }
         }
         else break;

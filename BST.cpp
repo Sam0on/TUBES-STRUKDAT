@@ -1,6 +1,8 @@
 // BST.cpp
 #include <iostream>
 #include <cctype>
+#include <cstdlib>
+#include <ctime>
 #include "BST.h"
 using namespace std;
 
@@ -68,13 +70,13 @@ BSTNode* minValueNode(BSTNode* node) {
     return current;
 }
 
-BSTNode* deleteNode(BSTNode* root, const string& title) {
+BSTNode* deleteNode(BSTNode* root, int id) {
     if (root == nullptr) return root;
 
-    if (title < root->data.title)
-        root->left = deleteNode(root->left, title);
-    else if (title > root->data.title)
-        root->right = deleteNode(root->right, title);
+    if (id < root->data.id)
+        root->left = deleteNode(root->left, id);
+    else if (id > root->data.id)
+        root->right = deleteNode(root->right, id);
     else {
         // node ketemu
         if (root->left == nullptr) {
@@ -89,7 +91,7 @@ BSTNode* deleteNode(BSTNode* root, const string& title) {
 
         BSTNode* temp = minValueNode(root->right);
         root->data = temp->data;
-        root->right = deleteNode(root->right, temp->data.title);
+        root->right = deleteNode(root->right, temp->data.id);
     }
     return root;
 }
@@ -100,7 +102,7 @@ void recommendByGenre(BSTNode* root, const string& genre) {
     recommendByGenre(root->left, genre);
 
     if (toLowerStr(root->data.genre) == toLowerStr(genre)) {
-         cout << root->data.id << ". " << root->data.title << " - " << root->data.artist << endl;
+         cout << root->data.title << " - " << root->data.artist << endl;
     }
 
     recommendByGenre(root->right, genre);
@@ -122,4 +124,40 @@ BSTNode* searchByID(BSTNode* root, int id) {
 
     if (id < root->data.id) return searchByID(root->left, id);
     return searchByID(root->right, id);
+}
+
+void reindexBST(BSTNode* root, int deletedID) {
+    if (root == nullptr) return;
+
+    if (root->data.id > deletedID) {
+        root->data.id--;
+    }
+
+    reindexBST(root->left, deletedID);
+    reindexBST(root->right, deletedID);
+}
+
+bool containsDuplicate(BSTNode* root, string title, string artist) {
+    if (root == nullptr) return false;
+
+    if (normalize(root->data.title) == normalize(title) && 
+        normalize(root->data.artist) == normalize(artist)) {
+        return true;
+    }
+
+    if (containsDuplicate(root->left, title, artist)) return true;
+    return containsDuplicate(root->right, title, artist);
+}
+
+song getRandomSong(BSTNode* root) {
+    if (!root) return {};
+    
+    int maxID = getMaxID(root);
+    if (maxID == 0) return {};
+
+    int randomID = rand() % maxID + 1;
+    BSTNode* found = searchByID(root, randomID);
+    
+    if (found) return found->data;
+    return root->data; // Fallback
 }
