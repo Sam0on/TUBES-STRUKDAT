@@ -1,4 +1,4 @@
-//DLL.cpp
+// DLL.cpp
 #include <iostream>
 #include "DLL.h"
 using namespace std;
@@ -50,13 +50,24 @@ void showList(DLLNode* head) {
 }
 
 
-void playSongs(DLLNode* head, Stack& history) {
+void updateSongInList(DLLNode* head, song newData) {
+    if (!head) return;
+    DLLNode* current = head;
+    do {
+        if (current->data.id == newData.id) {
+            current->data = newData;
+        }
+        current = current->next;
+    } while (current != head);
+}
+
+void playSongs(DLLNode* head, Stack& history, DLLNode* startNode) {
     if (!head) {
         cout << "Playlist kosong.\n";
         return;
     }
 
-    DLLNode* current = head;
+    DLLNode* current = startNode ? startNode : head;
     int choice;
 
     // Push initial song
@@ -71,15 +82,15 @@ void playSongs(DLLNode* head, Stack& history) {
         cout << "\nLirik:\n" << current->data.lirik << endl;
         cout << "=========================\n";
 
-        cout << "[1] Prev  |  [2] Next  |  [3] Pause  |  [4] Back\nPilih: ";
+        cout << "[1] Next  |  [2] Prev  |  [3] Pause  |  [4] Back\nPilih: ";
         cin >> choice;
 
         if (choice == 1) {
-            current = current->prev;
+            current = current->next;
             push(history, current->data);
         }
         else if (choice == 2) {
-            current = current->next;
+            current = current->prev;
             push(history, current->data);
         }
         else if (choice == 3) {
@@ -125,6 +136,7 @@ void deleteFromPlaylist(DLLNode*& head, string title) {
         return;
     }
 
+    // Jika satu-satunya node
     if (current->next == head && current->prev == head) {
         delete current;
         head = nullptr;

@@ -1,4 +1,3 @@
-// main.cpp
 #include <iostream>
 #include "BST.h"
 #include "DLL.h"
@@ -14,6 +13,7 @@ int main() {
     createList(playlist);
     createStack(history);
 
+    // Data awal (Dummy Data)
     insertNode(library, {1, "Closer", "The Chainsmokers, Halsey", 2016, "04:04", "Pop", "Hey, I was doing just fine before I met you\nI drink too much and that's an issue, but I'm okay\nHey, you tell your friends it was nice to meet them\nBut I hope I never see them again"});
     insertNode(library, {2, "The Scientist", "Coldplay", 2010, "05:09", "Pop", "Nobody said it was easy\nIt's such a shame for us to part\nNobody said it was easy\nNo one ever said it would be this hard\nOh, take me back to the start"});
     insertNode(library, {3, "if u could see me cryin' in my room", "Arash Buana, raissa anggiani", 2020, "04:16", "Indie", "Hey, I missed you too\nAnd just so you know, I still love you\nAnd I don't even know if I'm alright\n'Cause if I called we'd only end up in a fight\nAnd I don't wanna keep on getting hurt\nStill holding to your favorite little shirt"});
@@ -45,20 +45,26 @@ int main() {
         cin >> menu;
 
         if (menu == 1) {
-            int m;
-            cout << "\n=== MENU ADMIN ===\n";
-            cout << "1. Tambah Lagu\n";
-            cout << "2. Lihat Semua Lagu\n";
-            cout << "3. Hapus Lagu\n";
-            cout << "Pilih: ";
-            cin >> m;
+            while (true) {
+                int m;
+                cout << "\n=== MENU ADMIN ===\n";
+                cout << "1. Tambah Lagu\n";
+                cout << "2. Lihat Semua Lagu\n";
+                cout << "3. Hapus Lagu\n";
+                cout << "4. Edit Lagu\n";
+                cout << "0. Kembali ke Menu Utama\n";
+                cout << "Pilih: ";
+                cin >> m;
+
+                if (m == 0) break;
 
             if (m == 1) {
                 id = getMaxID(library) + 1;
                 cout << "ID: " << id << endl;
                 cin.ignore();
 
-                cout << "Judul Lagu: ";
+
+                cout << "Judul: ";
                 getline(cin, title);
                 
                 cout << "Artis: ";
@@ -99,81 +105,142 @@ int main() {
                 library = deleteNode(library, title);
                 cout << "Lagu dihapus.\n";
             }
+            else if (m == 4) {
+                 cout << "Masukkan ID Lagu yang ingin diedit: ";
+                 cin >> id;
+                 cin.ignore();
+                 
+                 BSTNode* target = searchByID(library, id);
+                 if (target) {
+                     cout << "Data Lama: " << target->data.title << " - " << target->data.artist << endl;
+                     
+                     cout << "Judul Baru: ";
+                     getline(cin, title);
+                     
+                     cout << "Artis Baru: ";
+                     getline(cin, artist);
 
+                     cout << "Tahun Rilis Baru: ";
+                     cin >> tahun;
+                     cin.ignore();
+
+                     cout << "Durasi Baru (mm:ss): ";
+                     getline(cin, durasi);
+
+                     cout << "Genre Baru: ";
+                     getline(cin, genre);
+
+                     cout << "Lirik Baru (akhiri dengan baris kosong):\n";
+                     string line;
+                     lirik = "";
+                     while (true) {
+                         getline(cin, line);
+                         if (line.empty()) break;
+                         lirik += line + "\n";
+                     }
+                     
+                     // Update data
+                     target->data.title = title;
+                     target->data.artist = artist;
+                     target->data.tahun = tahun;
+                     target->data.durasi = durasi;
+                     target->data.genre = genre;
+                     target->data.lirik = lirik;
+                     
+                     // Update di playlist juga jika ada
+                     updateSongInList(playlist, target->data);
+                     
+                     cout << "Lagu berhasil diupdate!\n";
+                 } else {
+                     cout << "Lagu dengan ID tersebut tidak ditemukan.\n";
+                 }
+            }
+            }
         }
 
         else if (menu == 2) {
             int u;
             cout << "\n=== MENU USER ===\n";
             cout << "1. Cari Lagu\n";
-            cout << "2. Tambah Lagu ke Playlist\n";
-            cout << "3. Lihat Playlist\n";
-            cout << "4. Putar Playlist\n";
-            cout << "5. Hapus Lagu dari Playlist\n";
-            cout << "6. Lihat Riwayat Lagu\n";
-            cout << "7. Rekomendasi Lagu Sesuai Genre\n";
+            cout << "2. Lihat Playlist (Putar, Tambah, Hapus)\n";
+            cout << "3. Lihat Riwayat Lagu\n";
+            cout << "4. Rekomendasi Lagu Sesuai Genre\n";
+            cout << "0. Kembali ke Menu Utama\n";
             cout << "Pilih: ";
             cin >> u;
 
             if (u == 1) {
-            cin.ignore();
-            cout << "Masukkan Judul Lagu: ";
-            getline(cin, title);
-
-            BSTNode* found = searchByTitle(library, title);
-            if (found) {
-                cout << "Ditemukan: " << found->data.title << " - " << found->data.artist << endl;
-                
-                int pilihTambah;
-                cout << "Tambahkan ke playlist? (1 = ya, 0 = tidak): ";
-                cin >> pilihTambah;
-                
-                if (pilihTambah == 1) {
-                    addLast(playlist, found->data);
-                    cout << "Lagu ditambahkan ke playlist!\n";
-                }
-            }
-            else {
-                cout << "Lagu tidak ditemukan.\n";
-            }
-        }
-
-
-
-            else if (u == 2) {
                 cin.ignore();
                 cout << "Masukkan Judul Lagu: ";
                 getline(cin, title);
-                
+
                 BSTNode* found = searchByTitle(library, title);
                 if (found) {
-                    addLast(playlist, found->data);
-                    cout << "Lagu ditambahkan ke playlist.\n";
-                } else {
+                    cout << "Ditemukan: " << found->data.title << " - " << found->data.artist << endl;
+                    
+                    int opsi;
+                    cout << "1. Tambah ke Playlist\n";
+                    cout << "2. Putar Langsung\n";
+                    cout << "0. Kembali\n";
+                    cout << "Pilih: ";
+                    cin >> opsi;
+                    
+                    if (opsi == 1) {
+                        addLast(playlist, found->data);
+                        cout << "Lagu ditambahkan ke playlist!\n";
+                    } else if (opsi == 2) {
+                        addLast(playlist, found->data);
+                        // Play dari node terakhir (tail)
+                        playSongs(playlist, history, playlist->prev); 
+                    }
+                }
+                else {
                     cout << "Lagu tidak ditemukan.\n";
                 }
             }
+            else if (u == 2) {
+                while (true) {
+                    cout << "\n=== PLAYLIST SAYA ===\n";
+                    showList(playlist);
+                    
+                    cout << "\nMenu Playlist:\n";
+                    cout << "1. Putar Playlist\n";
+                    cout << "2. Tambah Lagu ke Playlist\n";
+                    cout << "3. Hapus Lagu dari Playlist\n";
+                    cout << "0. Kembali ke Menu User\n";
+                    cout << "Pilih: ";
+                    int p;
+                    cin >> p;
 
-
+                    if (p == 1) {
+                        playSongs(playlist, history);
+                    } else if (p == 2) {
+                         cin.ignore();
+                         cout << "Masukkan Judul Lagu yang ingin ditambahkan: ";
+                         getline(cin, title);
+                         
+                         BSTNode* found = searchByTitle(library, title);
+                         if (found) {
+                             addLast(playlist, found->data);
+                             cout << "Lagu berhasil ditambahkan ke playlist.\n";
+                         } else {
+                             cout << "Lagu tidak ditemukan di library.\n";
+                         }
+                    } else if (p == 3) {
+                         cin.ignore();
+                         cout << "Masukkan Judul Lagu yang ingin dihapus: ";
+                         getline(cin, title);
+                         deleteFromPlaylist(playlist, title);
+                    } else if (p == 0) {
+                        break;
+                    }
+                }
+            }
             else if (u == 3) {
-                cout << "\n=== PLAYLIST ===\n";
-                showList(playlist);
-            }
-
-            else if (u == 4) {
-                playSongs(playlist, history);
-            }
-            else if (u == 5) {
-                cin.ignore();
-                cout << "Masukkan Judul Lagu yang ingin dihapus dari playlist: ";
-                getline(cin, title);
-                deleteFromPlaylist(playlist, title);
-            }
-            else if (u == 6) {
                 cout << "\n=== RIWAYAT LAGU ===\n";
                 showHistory(history);
             }
-            else if (u == 7) {
+            else if (u == 4) {
                 cin.ignore();
                 cout << "Masukkan Genre: ";
                 getline(cin, genre);

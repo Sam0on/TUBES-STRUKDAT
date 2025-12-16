@@ -1,4 +1,4 @@
-//BST.cpp
+// BST.cpp
 #include <iostream>
 #include <cctype>
 #include "BST.h"
@@ -114,4 +114,12 @@ int getMaxID(BSTNode* root) {
         current = current->right;
     }
     return current->data.id;
+}
+
+BSTNode* searchByID(BSTNode* root, int id) {
+    if (root == nullptr) return nullptr;
+    if (root->data.id == id) return root;
+
+    if (id < root->data.id) return searchByID(root->left, id);
+    return searchByID(root->right, id);
 }

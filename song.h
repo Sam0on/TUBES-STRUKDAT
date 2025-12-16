@@ -1,4 +1,4 @@
-//mong.h
+//song.h
 #ifndef SONG_H
 #define SONG_H
 #include <string>
@@ -8,10 +8,10 @@ struct song {
     int id;
     string title;
     string artist;
-    int tahun;
-    string durasi;
-    string genre;
-    string lirik;
+    int tahun;        // tahun rilis lagu
+    string durasi;    // durasi lagu, contoh "03:45"
+    string genre;     // genre lagu
+    string lirik;     // lirik lagu (panjang)
 };
 
 #endif

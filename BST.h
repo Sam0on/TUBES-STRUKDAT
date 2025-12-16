@@ -1,4 +1,4 @@
-//BST.h
+// BST.h
 #ifndef BST_H
 #define BST_H
 
@@ -20,5 +20,6 @@ BSTNode* minValueNode(BSTNode* node);
 BSTNode* deleteNode(BSTNode* root, const string& title);
 void recommendByGenre(BSTNode* root, const string& genre);
 int getMaxID(BSTNode* root);
+BSTNode* searchByID(BSTNode* root, int id);
 
 #endif
